@@ -9,7 +9,8 @@ class App extends Component {
       { name: 'Wonyoung', age: 13, blood: 'O', group: 'Produce48'},
       { name: 'Yena', age: 19, blood: 'A', group: 'Produce48'}
     ],
-    otherState: 'Others'
+    otherState: 'Others',
+    showPersons: false
   }
 
   switchNameHandler = (newName) => {
@@ -35,6 +36,11 @@ class App extends Component {
     });
   }
 
+  tooglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow })
+  }
+
   render() {
     const buttonStyle = {
       backgroundColor: '#fff',
@@ -50,26 +56,31 @@ class App extends Component {
         <p>Here is my wife's and her rivals profile : </p>
         <button
           style={buttonStyle}
-          onClick={() => this.switchNameHandler('Son Chaeyoung!')}>Switch Name</button>
-        <Person 
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-          blood={this.state.persons[0].blood}
-          group={this.state.persons[0].group}/>
-        <Person 
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          blood={this.state.persons[1].blood}
-          group={this.state.persons[1].group}
-          clickElement={this.switchNameHandler.bind(this, 'Chaeyoung Son')}
-          changedElement={this.groupChangedHandler}>
-            She's the youngest
-        </Person>
-        <Person 
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-          blood={this.state.persons[2].blood}
-          group={this.state.persons[2].group}/>
+          onClick={this.tooglePersonsHandler}>Show Name</button>
+          { 
+            this.state.showPersons === true ? 
+            <div>
+              <Person 
+                name={this.state.persons[0].name}
+                age={this.state.persons[0].age}
+                blood={this.state.persons[0].blood}
+                group={this.state.persons[0].group}/>
+              <Person 
+                name={this.state.persons[1].name}
+                age={this.state.persons[1].age}
+                blood={this.state.persons[1].blood}
+                group={this.state.persons[1].group}
+                clickElement={this.switchNameHandler.bind(this, 'Chaeyoung Son')}
+                changedElement={this.groupChangedHandler}>
+                  She's the youngest
+              </Person>
+              <Person 
+                name={this.state.persons[2].name}
+                age={this.state.persons[2].age}
+                blood={this.state.persons[2].blood}
+                group={this.state.persons[2].group}/>
+            </div> : null
+          }
       </div>
     );
     // return React.createElement('div', {className:'App'}, React.createElement('h1', null, 'I\'m Chaeyoung\'s Husband'));
