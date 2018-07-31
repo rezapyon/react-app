@@ -1,17 +1,58 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import AppCss from './App.css';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit'
 // import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
-class App extends Component {
-  state = {
-    persons: [
-      { id:"W1", name: 'Chaeyoung', age: 19, blood: 'O', group: 'TWICE'},
-      { id:"W2", name: 'Wonyoung', age: 13, blood: 'O', group: 'Produce48'},
-      { id:"W3", name: 'Yena', age: 19, blood: 'A', group: 'Produce48'}
-    ],
-    otherState: 'Others',
-    showPersons: false
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
+    this.state = {
+      persons: [
+        { id: "W1", name: 'Chaeyoung', age: 19, blood: 'O', group: 'TWICE' },
+        { id: "W2", name: 'Wonyoung', age: 13, blood: 'O', group: 'Produce48' },
+        { id: "W3", name: 'Yena', age: 19, blood: 'A', group: 'Produce48' }
+      ],
+      otherState: 'Others',
+      showPersons: false
+    }
+  }
+
+  // state = {
+  //   persons: [
+  //     { id:"W1", name: 'Chaeyoung', age: 19, blood: 'O', group: 'TWICE'},
+  //     { id:"W2", name: 'Wonyoung', age: 13, blood: 'O', group: 'Produce48'},
+  //     { id:"W3", name: 'Yena', age: 19, blood: 'A', group: 'Produce48'}
+  //   ],
+  //   otherState: 'Others',
+  //   showPersons: false
+  // }
+
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount()');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount()');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('[UPDATE App.js] Inside componentWillReceiveProps()', nextProps);
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('[UPDATE App.js] Inside shouldComponentUpdate()', nextProps, nextState);
+  //   return nextState.persons !== this.state.persons || 
+  //     nextState.showPersons !== this.state.showPersons;
+  // }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside componentWillUpdate()', nextProps, nextState);
+  }
+
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] Inside componentDidUpdate()');
   }
 
   groupChangedHandler = (event, id) => {
@@ -31,7 +72,7 @@ class App extends Component {
     // const person = Object.assign({}, this.state.persons[personIndex]);
 
     this.setState({
-        persons: persons
+      persons: persons
     });
   }
 
@@ -48,59 +89,25 @@ class App extends Component {
   }
 
   render() {
-    // const buttonStyle = {
-    //   backgroundColor: 'green',
-    //   color: '#fff',
-    //   font: 'inherit',
-    //   border: '1px solid blue',
-    //   padding: '8px',
-    //   cursor: 'pointer'
-    // };
-
+    console.log('[App.js] Inside render()');
     let persons = null;
-    let buttonClass = '';
 
-    if(this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((girl, index) => {
-            return <Person 
-              key={girl.id}
-              clickElement={() => this.deletePersonHandler(index)}
-              name={girl.name}
-              age={girl.age}
-              blood={girl.blood}
-              group={girl.group}
-              changedElement={(event) => this.groupChangedHandler(event, girl.id)}/>
-              // <ErrorBoundary key={girl.id}>
-              // </ErrorBoundary>
-          })}
-        </div>
-      );
-
-      // buttonStyle.backgroundColor = 'red';
-      buttonClass = AppCss.Red;
+    if (this.state.showPersons) {
+      persons = <Persons
+        persons={this.state.persons}
+        clicked={this.deletePersonHandler}
+        changed={this.groupChangedHandler} />
     };
-
-    const classes = [];
-
-    if(this.state.persons.length <= 2){
-      classes.push(AppCss.red);
-    }
-
-    if(this.state.persons.length <= 1){
-      classes.push(AppCss.bold);
-    }
 
     return (
       <div className={AppCss.App}>
-        <h1>Yo, I'm Chaeyoung's future husband</h1>
-        <p className={classes.join(' ')}>Here is my wife's and her rivals profile : </p>
-        <button
-          className={buttonClass}
-          // style={buttonStyle}
-          onClick={this.togglePersonsHandler}>Toggle Persons</button>
-          {persons}
+        <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
+        <Cockpit
+          appTitle={this.props.title}
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler} />
+        {persons}
       </div>
     );
     // return React.createElement('div', {className:'App'}, React.createElement('h1', null, 'I\'m Chaeyoung\'s Husband'));
