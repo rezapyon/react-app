@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PersonCss from './Person.css';
 import withClass from '../../../hoc/WithClass';
 import PropTypes from 'prop-types';
+import {AuthContext} from '../../../containers/App'
 
 class Person extends Component {
     constructor(props) {
@@ -35,6 +36,9 @@ class Person extends Component {
         // }
         return (
             <React.Fragment>
+                <AuthContext.Consumer>
+                    {auth => auth ? <p>I'm Logged In!</p> : null}
+                </AuthContext.Consumer>
                 <p onClick={this.props.clickElement}> {this.props.name} is {this.props.age} years old, she has {this.props.blood} blood type and she's part of {this.props.group}. <b>{childrenElement}</b></p>
                 <input 
                     ref={this.inputElement}
