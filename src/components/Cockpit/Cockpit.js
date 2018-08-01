@@ -3,10 +3,10 @@ import CockpitCss from './Cockpit.css';
 
 const cockpit = (props) => {
     const classes = [];
-    let buttonClass = '';
+    let buttonClass = CockpitCss.Button;
 
     if(props.showPersons){
-        buttonClass = CockpitCss.Red;
+        buttonClass = [CockpitCss.Button, CockpitCss.Red].join(' ');
     }
 
     if(props.persons.length <= 2){
@@ -18,13 +18,13 @@ const cockpit = (props) => {
     }
 
     return(
-        <div className={CockpitCss.Cockpit}>
+        <React.Fragment>
             <h1>{props.appTitle}</h1>
             <p className={classes.join(' ')}>Here is my wife's and her rivals profile : </p>
             <button
                 className={buttonClass}
                 onClick={props.clicked}>Toggle Persons</button>
-        </div>
+        </React.Fragment>
     );
 };
 

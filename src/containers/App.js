@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import AppCss from './App.css';
 import Persons from '../components/Persons/Persons';
-import Cockpit from '../components/Cockpit/Cockpit'
+import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/WithClass';
 // import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 class App extends PureComponent {
@@ -15,7 +16,8 @@ class App extends PureComponent {
         { id: "W3", name: 'Yena', age: 19, blood: 'A', group: 'Produce48' }
       ],
       otherState: 'Others',
-      showPersons: false
+      showPersons: false,
+      toggleClicked: 0
     }
   }
 
@@ -78,7 +80,12 @@ class App extends PureComponent {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow })
+    this.setState( (prevState, props) => { 
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      }
+    })
   }
 
   deletePersonHandler = (personIndex) => {
@@ -100,7 +107,7 @@ class App extends PureComponent {
     };
 
     return (
-      <div className={AppCss.App}>
+      <React.Fragment>
         <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
         <Cockpit
           appTitle={this.props.title}
@@ -108,10 +115,10 @@ class App extends PureComponent {
           persons={this.state.persons}
           clicked={this.togglePersonsHandler} />
         {persons}
-      </div>
+      </React.Fragment>
     );
     // return React.createElement('div', {className:'App'}, React.createElement('h1', null, 'I\'m Chaeyoung\'s Husband'));
   }
 }
 
-export default App;
+export default withClass(App, AppCss.App);
